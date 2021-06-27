@@ -2,8 +2,13 @@ import random
 
 # 1.商品
 shop = [
-    ["机械革命", 15000],
+    ["机械革命电脑", 15000],
+    ["三星电脑", 6500],
+    ["苹果电脑", 13000],
     ["辣条", 2.5],
+    ["辣条1", 5],
+    ["辣条2", 10],
+    ["ASUS电脑", 7000],
     ["HUAWEI watch", 1200],
     ["MAC PC", 13000],
     ["Iphone 54 plus", 45000],
@@ -24,6 +29,7 @@ def suiji():
     data = random.randint(0, 20)
     i = 0
     com = 5000
+
     while i <= 10:
         print("目前金币：", com)
         num = input("请输入你的数字：")
@@ -44,19 +50,21 @@ def suiji():
     print("你的次数已用尽！Bye！！！")
 
 
+
 # 够买商品
 def goumai():
-    print("欢迎来到昌平商城")
+    print("\033[1;35m\t\t\t欢迎来到昌平商城\033[0m")
     money = input("请输入您的钱包余额:")
     money = int(money)
 
     # 3.准备一个空的购物车
     mycart = []
-    piao = random.randint(0,len(shop)-1)
-    print("您获得的本次商品折扣序号为：",shop[piao])
+    piao = random.randint(0,1)
+    if piao == 0:
+        print("恭喜你得到了电脑9折优惠劵！")
+    else:
+        print("恭喜你得到了辣条5折优惠劵！")
 
-    you = shop[piao][1]
-    print("您享受的是%.2f" % you, "优惠")
     # 买东西
     # 展示商品
     if money >= 0:
@@ -73,19 +81,24 @@ def goumai():
                 print("您要的商品不存在！")
             else:
                 # 看钱是否足够
-                if  money < shop[chose][1]:
-                    print("对不起，穷鬼，余额不足，请到商城去购买！")
-                else:
-                    if chose == piao:
-                        mycart.append(shop[chose])
-                        aa = piao * shop[chose][1]
-                        money -= aa
-                        print("您还剩%.2f" % money)
-                    else:
-                        mycart.append(shop[chose])
-                        money -= shop[chose][1]
-                        print("您还剩%.2f" % money)
+                if  money >= shop[chose][1]:
+                    mycart.append(shop[chose][0])
+                    if piao == 1 and shop[chose][0].find("辣条")>= 0:
+                        money -= shop[chose][1] * 0.5
+                        aa = shop[chose][1] * 0.5
+                        print("购买成功，商品金额为:{}".format(shop[chose][1]), '您的当前余额剩余:', money, '元','您的消费了:', aa, '元')
 
+                    elif piao == 0 and shop[chose][0].find('电脑') >= 0:
+                        money -= shop[chose][1] * 0.9
+                        aa = shop[chose][1] * 0.5
+                        print("购买成功，商品金额为:{}".format(shop[chose][1]), '您的当前余额剩余:', money, '元','您的消费了:', aa, '元')
+                    else:
+
+                        money -= shop[chose][1]
+                        aa = shop[chose][1] * 0.5
+                        print("购买成功，商品金额为:{}".format(shop[chose][1]), '您的当前余额剩余:', money, '元','您的消费了:', aa, '元')
+                else:
+                    print("对不起，穷鬼，余额不足，请到商城去购买！")
         elif chose == 'q' or chose == 'Q':
             print("欢迎下次光临！")
         else:
@@ -96,13 +109,14 @@ def goumai():
     print("下面是您的购物小条，请拿好：")
     for index, value in enumerate(mycart):
         print(index, "   ", value)
+
     print("您的钱包还剩：￥", money)
 
 
 def tuichu():
     namelist = input("亲，你确认要回到界面（yes/no）?")
     namelist = namelist.lower()
-    if namelist == "yes":
+    if namelist == "yes" or "YES":
         print("恭喜你成功退出")
     else:
         print("输入有误重新输入！")
@@ -117,15 +131,19 @@ while True:
             \033[1;34m---------------------------------\033[0m
         ''')
     a = input("请输入你的选择：")
-    a = int(a)
-    if a == 1:
+    # a = int(a)
+
+    if a == "1":
         suiji()
         break
-    elif a == 2:
+    elif a == "2":
         goumai()
         break
-    else:
+    elif a == "3":
         tuichu()
         break
+    else:
+        print("输入有误！正确输入你的选项：")
+
 
 
